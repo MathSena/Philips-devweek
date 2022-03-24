@@ -3,7 +3,7 @@ package com.dio_class.devweek.Entify;
 
 import javax.persistence.*;
 
-@Entity //Usar quando vai armazenar no Banco
+@Entity
 public class Regiao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
