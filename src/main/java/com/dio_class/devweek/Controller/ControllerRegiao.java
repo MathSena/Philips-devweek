@@ -12,33 +12,33 @@ import java.util.Optional;
 
 @RestController
 public class ControllerRegiao {
-
     private final RegiaoRepo repository;
 
-    public ControllerRegiao(RegiaoRepo repository){
+    public ControllerRegiao(RegiaoRepo repository) {
         this.repository = repository;
     }
 
-    @GetMapping("/regiao")
-    public List<Regiao> getRegiao(){
-        return repository.findAll();
+    @GetMapping("/regioes")
+    public ResponseEntity<?> findAllRegioes(){
+        try {
+            List<Regiao> allRegioes = repository.findAll();
+            System.out.println("Achou");
+            if (allRegioes.isEmpty())
+                System.out.println("Vazia");
+            return new ResponseEntity<>(allRegioes, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/regiao/{id}")
-    public ResponseEntity<?> getRegiaoById(@PathVariable  Long id){
-        Optional regiaoEscolhidaOptional = repository.findById(id);
-        if(regiaoEscolhidaOptional.isPresent()){
-            Object regiaoEscolhida = regiaoEscolhidaOptional.get();
-            return new ResponseEntity<>(regiaoEscolhida, HttpStatus.OK);
-
+    @GetMapping("regioes/{id}")
+    public ResponseEntity<Regiao> findRegioesById(@PathVariable Long id){
+        Optional<Regiao> regiaoOptional = repository.findById(id);
+        if (regiaoOptional.isPresent()){
+            Regiao regiaoUnid = regiaoOptional.get();
+            return new ResponseEntity<>(regiaoUnid, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-    @PostMapping("/regiao/novo")
-    public void putRegiao(Regiao newRegiao){
-        repository.save(newRegiao);
-    }
-
 
 }
